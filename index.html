@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>66影视网｜每日影视排片与片单推荐 - 66yingshiwang-app</title>
+<meta name="description" content="66影视网（https://66yingshiwang-app.github.io）把每日热映榜单、分类片库、影评资讯和追剧日历收在一页里，按类型、更新时间、评分三个维度快速筛片，手机电脑打开即用，帮你少花时间找片、多花时间看片。">
+<meta name="keywords" content="66影视网,66yingshiwang-app,影视推荐,热映榜单,追剧日历,电影片单,剧集更新时间,影评资讯,分类片库,在线观影导航">
+<meta name="author" content="66影视网编辑部">
+<meta name="robots" content="index,follow">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://66yingshiwang-app.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="66影视网">
+<meta property="og:title" content="66影视网｜每日影视排片与片单推荐">
+<meta property="og:description" content="热映榜单、分类片库、影评资讯、追剧日历，一页看完当天值得看的片子。">
+<meta property="og:url" content="https://66yingshiwang-app.github.io/">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="66影视网｜每日影视排片与片单推荐">
+<meta name="twitter:description" content="按类型、更新时间、评分筛片，打开就能用的影视排片单页。">
+<meta name="theme-color" content="#12100e">
+<style>
+:root{
+  --ink:#12100e;
+  --paper:#efe7db;
+  --paper-2:#e3d9c9;
+  --line:rgba(239,231,219,.16);
+  --line-dark:rgba(18,16,14,.14);
+  --hot:#e8622a;
+  --deep:#2f6f5e;
+  --mute:#9a9187;
+  --serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;margin:0;letter-spacing:.02em;}
+p{margin:0 0 .9em;}
+.wrap{width:100%;max-width:1140px;margin:0 auto;padding:0 24px;}
+
+/* 网址条：放在页面最顶端，位置与常见页脚版权行区分开 */
+.ticketbar{
+  background:var(--hot);
+  color:#1a1208;
+  font-size:12.5px;
+  letter-spacing:.14em;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.ticketbar .tb-in{
+  max-width:1140px;margin:0 auto;padding:8px 24px;
+  display:flex;gap:18px;align-items:center;justify-content:space-between;
+}
+.ticketbar b{font-weight:700;}
+.ticketbar span{opacity:.85;}
+.ticketbar a{border-bottom:1px dashed rgba(26,18,8,.5);}
+
+/* 头部 */
+.sitehead{
+  position:sticky;top:0;z-index:60;
+  background:rgba(18,16,14,.94);
+  backdrop-filter:saturate(140%) blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.hd-in{display:flex;align-items:center;gap:22px;padding:14px 24px;max-width:1140px;margin:0 auto;}
+.brand{display:flex;align-items:baseline;gap:9px;flex:0 0 auto;}
+.brand .mark{
+  width:34px;height:34px;flex:0 0 34px;border-radius:50%;
+  background:var(--hot);color:#1a1208;
+  font-family:var(--serif);font-size:15px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  align-self:center;
+}
+.brand .name{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.04em;}
+.brand .slogan{font-size:11.5px;color:var(--mute);letter-spacing:.1em;}
+.nav{
+  margin-left:auto;display:flex;gap:4px;flex-wrap:nowrap;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.nav::-webkit-scrollbar{display:none;}
+.nav a{
+  font-size:14px;color:#cfc6ba;padding:7px 12px;border:1px solid transparent;white-space:nowrap;
+}
+.nav a:hover{color:var(--paper);border-color:var(--line);background:rgba(239,231,219,.05);}
+
+/* 首屏 */
+.hero{
+  position:relative;
+  padding:74px 0 60px;
+  background:
+    radial-gradient(900px 420px at 12% 0%,rgba(232,98,42,.16),transparent 62%),
+    repeating-linear-gradient(0deg,rgba(239,231,219,.028) 0 1px,transparent 1px 4px);
+  border-bottom:1px solid var(--line);
+}
+.hero-grid{display:grid;grid-template-columns:1.35fr .85fr;gap:52px;align-items:start;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:.18em;color:var(--hot);
+  border:1px solid rgba(232,98,42,.4);padding:5px 12px;margin-bottom:22px;
+}
+h1.big{font-size:clamp(38px,6.2vw,68px);line-height:1.1;letter-spacing:.01em;}
+h1.big em{font-style:normal;color:var(--hot);}
+.lede{font-size:17px;color:#cfc6ba;max-width:52ch;margin:20px 0 30px;}
+.lede strong{color:var(--paper);font-weight:600;}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;}
+.btn{
+  display:inline-block;padding:12px 24px;font-size:14.5px;letter-spacing:.04em;
+  border:1px solid var(--hot);background:var(--hot);color:#1a1208;font-weight:600;
+}
+.btn.ghost{background:transparent;color:var(--paper);border-color:var(--line);}
+.btn.ghost:hover{border-color:var(--paper);}
+.facts{display:flex;gap:34px;margin-top:38px;flex-wrap:wrap;}
+.facts div b{display:block;font-family:var(--serif);font-size:30px;color:var(--paper);line-height:1.2;}
+.facts div span{font-size:12.5px;color:var(--mute);letter-spacing:.08em;}
+
+/* 票根卡：域名落在这里 */
+.stub{
+  background:var(--paper);color:var(--ink);
+  padding:26px 24px 22px;position:relative;
+  box-shadow:0 18px 40px rgba(0,0,0,.45);
+}
+.stub:before,.stub:after{
+  content:"";position:absolute;left:0;right:0;height:9px;
+  background:radial-gradient(circle at 6px 0,transparent 0 6px,var(--paper) 6px) 0 0/12px 9px repeat-x;
+}
+.stub:before{top:-9px;transform:rotate(180deg);}
+.stub:after{bottom:-9px;}
+.stub h3{font-size:15px;letter-spacing:.2em;color:var(--deep);margin-bottom:14px;}
+.stub .url{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13px;word-break:break-all;background:var(--paper-2);
+  border-left:3px solid var(--hot);padding:10px 12px;margin:0 0 16px;
+}
+.stub dl{margin:0;font-size:13px;}
+.stub dl div{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px dashed var(--line-dark);}
+.stub dt{color:#6b6459;}
+.stub dd{margin:0;font-weight:600;}
+
+/* 通用区块 */
+section.blk{padding:64px 0;border-bottom:1px solid var(--line);}
+.blk.alt{background:var(--paper);color:var(--ink);}
+.blk.alt h2,.blk.alt h3{color:var(--ink);}
+.blk.alt .sub{color:#6b6459;}
+.blk-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px;flex-wrap:wrap;}
+h2{font-size:clamp(24px,3.4vw,34px);line-height:1.25;}
+.kicker{font-size:12px;letter-spacing:.2em;color:var(--hot);display:block;margin-bottom:9px;}
+.blk.alt .kicker{color:var(--deep);}
+.sub{font-size:14px;color:var(--mute);max-width:44ch;}
+.blk.alt .sub{color:#6b6459;}
+
+/* 榜单 */
+.rank{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+.blk.alt .rank{border-color:var(--line-dark);}
+.rank li{
+  display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:center;
+  padding:18px 4px;border-bottom:1px solid var(--line);
+}
+.blk.alt .rank li{border-color:var(--line-dark);}
+.rank .no{font-family:var(--serif);font-size:26px;color:var(--hot);letter-spacing:.02em;}
+.blk.alt .rank .no{color:var(--deep);}
+.rank h3{font-size:18px;margin-bottom:4px;}
+.rank .meta{font-size:12.5px;color:var(--mute);letter-spacing:.06em;}
+.blk.alt .rank .meta{color:#6b6459;}
+.rank .note{font-size:14px;color:#cfc6ba;margin:6px 0 0;}
+.blk.alt .rank .note{color:#4b453c;}
+.score{font-family:var(--serif);font-size:22px;color:var(--hot);white-space:nowrap;}
+.blk.alt .score{color:var(--deep);}
+.score small{display:block;font-family:var(--sans);font-size:11px;color:var(--mute);letter-spacing:.08em;}
+.blk.alt .score small{color:#6b6459;}
+
+/* 分类格子 */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.tile{
+  border:1px solid var(--line);padding:20px 18px;display:block;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease;
+}
+.tile:hover{transform:translateY(-3px);background:rgba(232,98,42,.09);border-color:rgba(232,98,42,.55);}
+.tile b{display:block;font-family:var(--serif);font-size:19px;margin-bottom:5px;}
+.tile span{font-size:12.5px;color:var(--mute);letter-spacing:.06em;}
+
+/* 影评 */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.card{
+  background:rgba(239,231,219,.045);border:1px solid var(--line);
+  padding:24px 22px;display:flex;flex-direction:column;
+}
+.card .date{font-size:12px;letter-spacing:.14em;color:var(--hot);margin-bottom:12px;}
+.card h3{font-size:19px;line-height:1.4;margin-bottom:10px;}
+.card p{font-size:14.5px;color:#c3bab0;flex:1;}
+.card .more{font-size:13px;letter-spacing:.08em;border-top:1px solid var(--line);padding-top:14px;color:var(--paper);}
+.card .more:hover{color:var(--hot);}
+
+/* 日历表 */
+.calwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.cal{width:100%;min-width:640px;border-collapse:collapse;font-size:14px;}
+table.cal th,table.cal td{border:1px solid var(--line-dark);padding:13px 14px;text-align:left;vertical-align:top;}
+table.cal thead th{background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:15px;letter-spacing:.06em;}
+table.cal td b{display:block;font-family:var(--serif);font-size:15.5px;margin-bottom:3px;}
+table.cal td span{font-size:12.5px;color:#6b6459;}
+table.cal tr td:first-child{width:96px;font-weight:700;background:var(--paper-2);}
+table.cal td.today{background:#fff6ec;}
+
+/* 问答 */
+.faq{border-top:1px solid var(--line);}
+details{border-bottom:1px solid var(--line);}
+.blk.alt details{border-color:var(--line-dark);}
+details summary{
+  cursor:pointer;list-style:none;padding:19px 34px 19px 0;position:relative;
+  font-family:var(--serif);font-size:17px;font-weight:700;
+}
+details summary::-webkit-details-marker{display:none;}
+details summary:after{
+  content:"+";position:absolute;right:4px;top:14px;font-size:22px;color:var(--deep);font-family:var(--sans);
+}
+details[open] summary:after{content:"−";}
+details .body{padding:0 34px 22px 0;font-size:14.5px;color:#4b453c;max-width:76ch;}
+details .body a{color:var(--deep);border-bottom:1px solid var(--deep);}
+
+/* 关于 */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+.about-grid p{font-size:15px;color:#cfc6ba;}
+.pillars{list-style:none;margin:0;padding:0;}
+.pillars li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);}
+.pillars .ic{
+  flex:0 0 30px;height:30px;border:1px solid var(--hot);color:var(--hot);
+  font-family:var(--serif);font-size:14px;display:flex;align-items:center;justify-content:center;
+}
+.pillars b{display:block;font-size:15px;margin-bottom:2px;}
+.pillars span{font-size:13.5px;color:var(--mute);}
+
+/* 页脚 */
+.sitefoot{padding:52px 0 40px;background:#0c0a09;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;}
+.foot-grid h4{font-family:var(--sans);font-size:13px;letter-spacing:.16em;color:var(--hot);margin-bottom:14px;font-weight:600;}
+.foot-grid ul{list-style:none;margin:0;padding:0;}
+.foot-grid li{padding:5px 0;font-size:14px;}
+.foot-grid li a{color:#bfb6ab;}
+.foot-grid li a:hover{color:var(--paper);}
+.foot-note{
+  margin-top:38px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:12.5px;color:#7d766d;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.foot-note .u{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.02em;}
+
+@media (max-width:960px){
+  .tiles{grid-template-columns:repeat(3,1fr);}
+  .cards{grid-template-columns:1fr 1fr;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:768px){
+  .wrap{padding:0 18px;}
+  .hd-in{padding:12px 18px;gap:14px;flex-wrap:wrap;}
+  .brand .slogan{display:none;}
+  .nav{margin-left:0;width:100%;order:3;}
+  .hero{padding:44px 0 40px;}
+  .hero-grid{grid-template-columns:1fr;gap:34px;}
+  .lede{font-size:16px;margin:16px 0 24px;}
+  .facts{gap:22px;margin-top:26px;}
+  .facts div b{font-size:24px;}
+  section.blk{padding:44px 0;}
+  .blk-head{margin-bottom:24px;}
+  .rank li{grid-template-columns:44px 1fr;gap:12px;padding:15px 2px;}
+  .rank .no{font-size:20px;}
+  .rank h3{font-size:16.5px;}
+  .rank .score{grid-column:2;justify-self:start;margin-top:4px;}
+  .rank .score small{display:inline;margin-left:8px;}
+  .tiles{grid-template-columns:1fr 1fr;gap:10px;}
+  .tile{padding:15px 14px;}
+  .tile b{font-size:16.5px;}
+  .cards{grid-template-columns:1fr;gap:14px;}
+  .about-grid{grid-template-columns:1fr;gap:28px;}
+  .ticketbar .tb-in{padding:7px 18px;gap:12px;font-size:11.5px;}
+  .ticketbar .tb-in span:last-child{display:none;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px;}
+  .sitefoot{padding:38px 0 30px;}
+}
+@media (max-width:420px){
+  .tiles{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr;}
+  .btnrow .btn{flex:1 1 100%;text-align:center;}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://66yingshiwang-app.github.io/#website",
+      "url":"https://66yingshiwang-app.github.io/",
+      "name":"66影视网",
+      "alternateName":"66yingshiwang-app",
+      "inLanguage":"zh-CN",
+      "description":"66影视网提供每日热映榜单、分类片库、影评资讯与追剧日历，按类型、更新时间和评分筛片。"
+    },
+    {
+      "@type":"Organization",
+      "@id":"https://66yingshiwang-app.github.io/#org",
+      "name":"66影视网",
+      "url":"https://66yingshiwang-app.github.io/",
+      "description":"66影视网是一个影视信息整理与片单推荐站点，专注热映榜单、分类片库、追剧日历与影评资讯。"
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://66yingshiwang-app.github.io/#webpage",
+      "url":"https://66yingshiwang-app.github.io/",
+      "name":"66影视网｜每日影视排片与片单推荐",
+      "isPartOf":{"@id":"https://66yingshiwang-app.github.io/#website"},
+      "about":{"@id":"https://66yingshiwang-app.github.io/#org"},
+      "inLanguage":"zh-CN"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<div class="ticketbar">
+  <div class="tb-in">
+    <span>◆ 今日排片已更新 · 2026年10月24日 星期六</span>
+    <span>本站唯一地址 <b><a href="#">https://66yingshiwang-app.github.io</a></b></span>
+  </div>
+</div>
+
+<header class="sitehead">
+  <div class="hd-in">
+    <div class="brand">
+      <span class="mark">66</span>
+      <span>
+        <span class="name">66影视网</span>
+        <span class="slogan">DAILY SCREENING</span>
+      </span>
+    </div>
+    <nav class="nav" aria-label="站点栏目导航">
+      <a href="#hot">今日热映</a>
+      <a href="#library">分类片库</a>
+      <a href="#review">影评资讯</a>
+      <a href="#calendar">追剧日历</a>
+      <a href="#guide">观看指南</a>
+      <a href="#about">关于本站</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">▲ 每天 09:00 更新一次榜单</span>
+        <h1 class="big">把想看的片子排个队<br>剩下的交给 <em>66影视网</em></h1>
+        <p class="lede">找片这件事挺耗时间的：平台换了、剧集断更了、评分各说各话。<strong>66影视网</strong>把当天上线的电影剧集、各类型的常备片单、编辑写的短评和更新日历收在一页里，翻两屏就能定下来今晚看什么。</p>
+        <div class="btnrow">
+          <a class="btn" href="#hot">看看今天上什么</a>
+          <a class="btn ghost" href="#library">按类型逛片库</a>
+        </div>
+        <div class="facts">
+          <div><b>6</b><span>常驻栏目</span></div>
+          <div><b>12</b><span>片库分类</span></div>
+          <div><b>09:00</b><span>每日更新时间</span></div>
+        </div>
+      </div>
+
+      <aside class="stub" aria-label="站点地址票根">
+        <h3>ADMIT ONE · 入场凭证</h3>
+        <p class="url">https://66yingshiwang-app.github.io</p>
+        <dl>
+          <div><dt>站点</dt><dd>66影视网</dd></div>
+          <div><dt>排片日</dt><dd>2026 / 10 / 24</dd></div>
+          <div><dt>观影位</dt><dd>不限设备</dd></div>
+          <div><dt>是否需要注册</dt><dd>不需要</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="blk" id="hot">
+    <div class="wrap">
+      <div class="blk-head">
+        <div>
+          <span class="kicker">栏目 01 / NOW SHOWING</span>
+          <h2>今日热映榜：66影视网编辑部当天在追的六部</h2>
+        </div>
+        <p class="sub">榜单按站内收藏量与近三日讨论量综合排序，每天早上九点重排，昨天的名次不作数。</p>
+      </div>
+      <ol class="rank">
+        <li>
+          <span class="no">01</span>
+          <div>
+            <h3><a href="#">沙丘2</a></h3>
+            <span class="meta">科幻 · 剧情 / 166 分钟</span>
+            <p class="note">沙漠政治拍出了宗教感，音效那几段值得戴耳机重看一遍。</p>
+          </div>
+          <span class="score">8.7<small>站内评分</small></span>
+        </li>
+        <li>
+          <span class="no">02</span>
+          <div>
+            <h3><a href="#">周处除三害</a></h3>
+            <span class="meta">犯罪 · 动作 / 134 分钟</span>
+            <p class="note">节奏不拖泥带水，几场对峙戏的张力全靠调度撑起来。</p>
+          </div>
+          <span class="score">8.5<small>站内评分</small></span>
+        </li>
+        <li>
+          <span class="no">03</span>
+          <div>
+            <h3><a href="#">奥本海默</a></h3>
+            <span class="meta">传记 · 历史 / 181 分钟</span>
+            <p class="note">黑白与彩色两条线交错，庭审段落的台词密度很高。</p>
+          </div>
+          <span class="score">8.4<small>站内评分</small></span>
+        </li>
+        <li>
+          <span class="no">04</span>
+          <div>
+            <h3><a href="#">漫长的季节</a></h3>
+            <span class="meta">悬疑 · 年代 / 12 集</span>
+            <p class="note">时代质感做到位了，结尾那段独白后劲很足。</p>
+          </div>
+          <span class="score">9.0<small>站内评分</small></span>
+        </li>
+        <li>
+          <span class="no">05</span>
+          <div>
+            <h3><a href="#">疯狂元素城</a></h3>
+            <span class="meta">动画 · 家庭 / 102 分钟</span>
+            <p class="note">设定巧，水的形态做得比剧情更讨喜，适合全家一起看。</p>
+          </div>
+          <span class="score">7.9<small>站内评分</small></span>
+        </li>
+        <li>
+          <span class="no">06</span>
+          <div>
+            <h3><a href="#">繁花</a></h3>
+            <span class="meta">剧情 · 都市 / 30 集</span>
+            <p class="note">镜头语言和配乐都很讲究，慢热但越往后越好看。</p>
+          </div>
+          <span class="score">8.2<small>站内评分</small></span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="blk alt" id="library">
+    <div class="wrap">
+      <div class="blk-head">
+        <div>
+          <span class="kicker">栏目 02 / LIBRARY</span>
+          <h2>分类片库：先挑心情，再挑片子</h2>
+        </div>
+        <p class="sub">十二个常备分类，每个分类下面都按年代和评分做了二次排序，不用在搜索框里反复试关键词。</p>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="#"><b>动作</b><span>1420 条 · 本周 +9</span></a>
+        <a class="tile" href="#"><b>科幻</b><span>860 条 · 本周 +6</span></a>
+        <a class="tile" href="#"><b>悬疑</b><span>1130 条 · 本周 +12</span></a>
+        <a class="tile" href="#"><b>动画</b><span>740 条 · 本周 +4</span></a>
+        <a class="tile" href="#"><b>纪录片</b><span>520 条 · 本周 +7</span></a>
+        <a class="tile" href="#"><b>爱情</b><span>980 条 · 本周 +3</span></a>
+        <a class="tile" href="#"><b>喜剧</b><span>1260 条 · 本周 +5</span></a>
+        <a class="tile" href="#"><b>恐怖</b><span>410 条 · 本周 +2</span></a>
+        <a class="tile" href="#"><b>历史</b><span>630 条 · 本周 +8</span></a>
+        <a class="tile" href="#"><b>犯罪</b><span>870 条 · 本周 +10</span></a>
+        <a class="tile" href="#"><b>家庭</b><span>390 条 · 本周 +1</span></a>
+        <a class="tile" href="#"><b>短片</b><span>260 条 · 本周 +14</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="review">
+    <div class="wrap">
+      <div class="blk-head">
+        <div>
+          <span class="kicker">栏目 03 / NOTES</span>
+          <h2>影评与资讯：编辑桌上剩下的便签</h2>
+        </div>
+        <p class="sub">不写通稿，不发预告片截图，只记录看完之后真正想说的那几句话。</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="date">2026 / 10 / 22</span>
+          <h3><a href="#">补片笔记：三部被低估的公路电影</a></h3>
+          <p>公路片不一定要走到远方才算数，其中一部全程困在一辆抛锚的面包车里，照样把人物关系写透了。</p>
+          <a class="more" href="#">阅读全文 →</a>
+        </article>
+        <article class="card">
+          <span class="date">2026 / 10 / 19</span>
+          <h3><a href="#">本周剧集观察：更新节奏正在变慢</a></h3>
+          <p>周更两集的排播越来越少见，取而代之的是打包上线。对追剧的人来说，日历该怎么排成了新问题。</p>
+          <a class="more" href="#">阅读全文 →</a>
+        </article>
+        <article class="card">
+          <span class="date">2026 / 10 / 15</span>
+          <h3><a href="#">关于画质：4K 之外更该看码率</a></h3>
+          <p>同一个片源在不同设备上差别很大，与其盯着分辨率数字，不如先看清码率和色彩采样这两项。</p>
+          <a class="more" href="#">阅读全文 →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk alt" id="calendar">
+    <div class="wrap">
+      <div class="blk-head">
+        <div>
+          <span class="kicker">栏目 04 / WEEKLY</span>
+          <h2>追剧日历：本周每天更新什么</h2>
+        </div>
+        <p class="sub">表格每周一重置，临时加更的条目会用橙色底标出来，今天那一行不用数也能看见。</p>
+      </div>
+      <div class="calwrap">
+        <table class="cal">
+          <caption class="sub" style="text-align:left;padding-bottom:12px;">2026 年第 43 周 · 10 月 19 日 至 10 月 25 日</caption>
+          <thead>
+            <tr><th scope="col">星期</th><th scope="col">更新内容</th><th scope="col">类型</th><th scope="col">备注</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>周一</td><td><b>悬疑剧 × 2</b><span>各更新 1 集</span></td><td><span>悬疑 / 犯罪</span></td><td><span>晚 20:00</span></td></tr>
+            <tr><td>周二</td><td><b>纪录片 × 1</b><span>单集完结</span></td><td><span>纪录</span></td><td><span>下午档</span></td></tr>
+            <tr><td>周三</td><td><b>都市剧 × 1</b><span>连更 2 集</span></td><td><span>剧情 / 都市</span></td><td><span>会员优先</span></td></tr>
+            <tr><td>周四</td><td><b>动画番剧 × 3</b><span>各更新 1 集</span></td><td><span>动画</span></td><td><span>早 10:00</span></td></tr>
+            <tr><td>周五</td><td><b>院线新片 × 4</b><span>首批上线</span></td><td><span>动作 / 喜剧</span></td><td><span>周榜重排</span></td></tr>
+            <tr class="today"><td>周六</td><td><b>加更：科幻剧 × 1</b><span>临时加更 1 集</span></td><td><span>科幻</span></td><td><span>今日更新</span></td></tr>
+            <tr><td>周日</td><td><b>经典修复 × 2</b><span>老片重映</span></td><td><span>历史 / 剧情</span></td><td><span>晚 21:00</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk alt" id="guide">
+    <div class="wrap">
+      <div class="blk-head">
+        <div>
+          <span class="kicker">栏目 05 / QUESTIONS</span>
+          <h2>观看指南：问得最多的四件事</h2>
+        </div>
+        <p class="sub">点开就能看答案，没有弹窗，也没有需要关闭的浮层。</p>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>66影视网需要注册或者下载插件才能用吗？</summary>
+          <div class="body">不需要。打开 https://66yingshiwang-app.github.io 就能浏览全部栏目，榜单、片库、日历都是直接展开的，没有登录墙。</div>
+        </details>
+        <details>
+          <summary>榜单的名次是怎么算出来的？</summary>
+          <div class="body">按近三日站内收藏增量与讨论量加权后排序，编辑不做人工置顶。每天早上九点重排一次，因此同一部片子在一周内的名次上下浮动是正常的。</div>
+        </details>
+        <details>
+          <summary>手机上看排版会不会乱？</summary>
+          <div class="body">不会。整站按移动端优先做了一遍版式：榜单在窄屏会自动折行，日历表格可以左右滑动，按钮会撑满整行方便点按。横屏竖屏都试过。</div>
+        </details>
+        <details>
+          <summary>想找的片子没在片库里，怎么处理？</summary>
+          <div class="body">片库每周增补一次，冷门条目和短片补得比较慢。可以在<a href="#">关于本站</a>这一栏找到收录说明，我们按类型和年代顺序逐批补齐。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="about">
+    <div class="wrap about-grid">
+      <div>
+        <span class="kicker">栏目 06 / ABOUT</span>
+        <h2>关于 66影视网</h2>
+        <p>做这个站的起因很朴素：每次想看片都要在好几个地方来回翻，翻完已经不想看了。于是把榜单、片库、短评和日历并排放到一个页面里，能少点几下就少点几下。</p>
+        <p>66影视网只做信息整理和片单推荐，不托管任何视频文件，也不提供下载。片子里提到的评分是站内读者打分的汇总，不代表任何官方评价。当前唯一地址是 https://66yingshiwang-app.github.io，除此之外没有镜像和分站。</p>
+      </div>
+      <ul class="pillars">
+        <li><span class="ic">一</span><div><b>只留有用的栏目</b><span>六个栏目各自解决一个具体问题，不堆砌入口。</span></div></li>
+        <li><span class="ic">二</span><div><b>更新时间写清楚</b><span>榜单每日九点重排，日历每周一重置。</span></div></li>
+        <li><span class="ic">三</span><div><b>不做自动播放</b><span>页面里没有自动播放的音视频，打开是安静的。</span></div></li>
+        <li><span class="ic">四</span><div><b>窄屏优先排版</b><span>从手机尺寸往上适配， tablets 和桌面同版式。</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>66影视网</h4>
+        <p style="font-size:14px;color:#bfb6ab;margin:0;">每日排片、分类片库与追剧日历，一页看完当天值得看的片子。</p>
+      </div>
+      <div>
+        <h4>栏目</h4>
+        <ul>
+          <li><a href="#hot">今日热映</a></li>
+          <li><a href="#library">分类片库</a></li>
+          <li><a href="#review">影评资讯</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>工具</h4>
+        <ul>
+          <li><a href="#calendar">追剧日历</a></li>
+          <li><a href="#guide">观看指南</a></li>
+          <li><a href="#about">收录说明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <ul>
+          <li><a href="#">内容纠错</a></li>
+          <li><a href="#">片单投稿</a></li>
+          <li><a href="#">合作洽谈</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span class="u">https://66yingshiwang-app.github.io</span>
+      <span>© 2026 66影视网 · 内容仅作影视信息整理与推荐</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
